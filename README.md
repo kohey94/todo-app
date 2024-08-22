@@ -6,7 +6,7 @@
 - Express
 - React
 - Node.js
-- 
+  
 ## Available Scripts
 
 ### `node backend/server.js`
