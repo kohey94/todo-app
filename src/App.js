@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import Todo from "./components/Todo";
+import LoginForm from './components/LoginForm';
+import Register from "./components/Register";
 
 const FILTER_MAP = {
   All: () => true,
@@ -11,24 +13,44 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('token'));
   const [tasks, setTasks] = useState([]);
   const [filter, setFilter] = useState("All"); 
-  
+  const [username, setUsername] = useState("");
+
   useEffect(() => {
-    fetch("http://localhost:5000/api/todos")
-      .then((response) => response.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setTasks(data);
-        } else {
-          console.error("Unexpected data format:", data);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to fetch tasks:", error);
-      });
-  }, []);
+    if (loggedIn) {
+      fetch("http://localhost:5000/api/todos")
+        .then((response) => response.json())
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setTasks(data);
+          } else {
+            console.error("Unexpected data format:", data);
+          }
+        })
+        .catch((error) => { console.error("Failed to fetch tasks:", error); });
+    }
+  }, [loggedIn]);
+
+  const handleLogin = (username) => {
+    setUsername(username);
+    setLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUsername("");
+    setLoggedIn(false);
+    window.location.href = '/';
+  };
   
+  // 登録処理
+  const handleRegister = (token, username) => {
+    localStorage.setItem('token', token);
+    setUsername(username)
+    setLoggedIn(true);
+  };
 
   function addTask(name) {
     fetch("http://localhost:5000/api/todos", {
@@ -123,19 +145,30 @@ function App() {
   
   return (
     <div className="todoapp stack-large">
-      <h1>TodoMatic</h1>
-      <Form addTask={addTask}/>
-      <div className="filters btn-group stack-exception">
-        {filterList}
-      </div>
-      <h2 id="list-heading">{headingText}</h2>
-      <ul
-        role="list"
-        className="todo-list stack-large stack-exception"
-        aria-labelledby="list-heading"
-      >
-        {taskList}
-      </ul>
+      {loggedIn ? (
+        <>
+          <h1>TodoMatic</h1>
+          <p>Welcome, {username}!</p> 
+          <button onClick={handleLogout}>ログアウト</button>
+          <Form addTask={addTask}/>
+          <div className="filters btn-group stack-exception">
+            {filterList}
+          </div>
+          <h2 id="list-heading">{headingText}</h2>
+          <ul
+            role="list"
+            className="todo-list stack-large stack-exception"
+            aria-labelledby="list-heading"
+          >
+            {taskList}
+          </ul>
+        </>
+      ) : (
+        <>
+        <LoginForm onLogin={handleLogin} />
+        <Register onRegister={handleRegister}/>
+        </>
+      )}
     </div>
   );
 }
