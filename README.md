@@ -6,6 +6,7 @@
 - Express
 - React
 - Node.js
+- Jest
   
 ## Available Scripts
 
