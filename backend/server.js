@@ -13,13 +13,15 @@ app.use(cors({
 
 // 環境変数読み込み
 require('dotenv').config();
-console.log(process.env.JWT_SECRET);
+//console.log(process.env.JWT_SECRET);
 
 // MongoDB接続
-mongoose.connect('mongodb://localhost:27017/todo-app', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const connectDB = async () => {
+  if (mongoose.connection.readyState === 0) { //接続されていなければ
+    mongoose.connect('mongodb://localhost:27017/todo-app');
+  }
+};
+connectDB();
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -135,3 +137,5 @@ app.delete('/api/todos/:id', async (req, res) => {
 app.listen(5000, () => {
     console.log('サーバー起動中 port 5000');
 })
+
+module.exports = app;
