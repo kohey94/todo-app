@@ -24,3 +24,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 - router使う
 - マルチユーザー対応
 - どっかにデプロイ
+
+
+## メモ
+考えてみればそりゃそうかって話だけど、単体テストすっとばして結合テスト書いてた
