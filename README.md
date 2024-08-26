@@ -9,10 +9,13 @@
 - Jest
   
 ## Available Scripts
+### サーバー起動
+#### `node backend/server.js`
 
-### `node backend/server.js`
-サーバー起動
-
-### `npm start`
-フロント起動  
+### フロント起動 
+#### `npm start`  
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+### テスト
+#### `cd backend`
+#### `npm test`
