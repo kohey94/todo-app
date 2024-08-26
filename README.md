@@ -19,3 +19,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 ### テスト
 #### `cd backend`
 #### `npm test`
+
+## TODO
+- router使う
+- マルチユーザー対応
+- どっかにデプロイ
