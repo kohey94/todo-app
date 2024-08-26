@@ -1,22 +1,24 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
-const app = require('../server');
+const { startServer, stopServer } = require('../server');
 const User = require('../models/User');
 
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
+
+let app;
+const port = Math.floor(Math.random() * 40000) + 10000; // ランダムなポート番号を生成
+
 
 beforeAll(async () => {
-    console.log('JWT_SECRET:', process.env.JWT_SECRET); // 環境変数を確認
-
-    if (mongoose.connection.readyState === 0) {
-      await mongoose.connect('mongodb://localhost:27017/todo-app-test');
-    }
-  });
+    app = startServer(port);
+});
 
 afterAll(async () => {
     // テスト終了後にデータベースをクリーンアップ
     await User.deleteMany({});
     await mongoose.connection.close();
+
+    stopServer();
 });
 
 describe('AuthAPIテスト', () => {

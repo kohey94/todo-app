@@ -5,6 +5,7 @@ const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
+const Todo = require('./models/Todo');
 const app = express();
 app.use(express.json());
 app.use(cors({
@@ -13,12 +14,17 @@ app.use(cors({
 
 // 環境変数読み込み
 require('dotenv').config();
-//console.log(process.env.JWT_SECRET);
+
 
 // MongoDB接続
 const connectDB = async () => {
-  if (mongoose.connection.readyState === 0) { //接続されていなければ
-    mongoose.connect('mongodb://localhost:27017/todo-app');
+  // TODO ここで環境変数からローカル用DBとテスト用DBの接続URI切り替えてるけど、この記述が適切かはわからん
+  // プロダクションコードにテスト用に関する記述があるのがキモいから
+  // テストコード側にテスト用DBの接続書いたほうがわかりやすい気がしてるから
+  // でもどうすればいいのかわかんないので一旦このまま
+  const dbUri = process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URI : process.env.MONGODB_URI;
+  if (mongoose.connection.readyState === 0) {
+    mongoose.connect(dbUri);
   }
 };
 connectDB();
@@ -75,16 +81,6 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-
-
-// Todoモデルの定義
-const TodoSchema = new mongoose.Schema({
-    name: String,
-    completed: Boolean,
-});
-
-const Todo = mongoose.model('Todo', TodoSchema);
-
 // APIルート
 app.get('/api/todos', async (req, res) => {
   try {
@@ -134,8 +130,33 @@ app.delete('/api/todos/:id', async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
-    console.log('サーバー起動中 port 5000');
-})
 
-module.exports = app;
+// TODO ここもローカル実行とテストでポート競合しないようにしているけどこれが適切化はわからん
+
+let server;
+
+// サーバー起動
+const startServer = (port) => {
+  const PORT = port || process.env.PORT || 5000;
+  server = app.listen(PORT, () => {
+    console.log(`サーバー起動中 port ${PORT}`);
+  });
+  return server;
+}
+
+// サーバー停止
+const stopServer = () => {
+  if (server) {
+    server.close(() => {
+      console.log('サーバー停止中');
+    });
+  }
+};
+
+// この部分を変更
+if (!module.parent) {
+  const PORT = process.env.PORT || 5000;
+  startServer(PORT);
+}
+
+module.exports = { app, startServer, stopServer };
