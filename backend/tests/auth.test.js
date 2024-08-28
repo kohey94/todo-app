@@ -24,7 +24,7 @@ afterAll(async () => {
 describe('AuthAPIテスト', () => {
   it('ユーザー登録', async () => {
     const response = await request(app)
-      .post('/api/register')
+      .post('/api/auth/register')
       .send({ username: 'testuser', password: 'testpassword'});
         
       expect(response.statusCode).toBe(201);
@@ -33,7 +33,7 @@ describe('AuthAPIテスト', () => {
 
   it('重複ユーザー登録', async () => {
     const response = await request(app)
-    .post('/api/register')
+    .post('/api/auth/register')
     .send({ username: 'testuser', password: 'testpassword'});
     
     expect(response.statusCode).toBe(400);
@@ -42,7 +42,7 @@ describe('AuthAPIテスト', () => {
 
   it('ユーザーログイン', async () => {
     const response = await request(app)
-      .post('/api/login')
+      .post('/api/auth/login')
       .send({ username: 'testuser', password: 'testpassword'});
     
     expect(response.statusCode).toBe(200);
@@ -52,7 +52,7 @@ describe('AuthAPIテスト', () => {
 
   it('ユーザーログイン失敗', async () => {
     const response = await request(app)
-      .post('/api/login')
+      .post('/api/auth/login')
       .send({ username: 'testuser', password: 'testpassword2'});
 
     expect(response.statusCode).toBe(401);
@@ -61,11 +61,10 @@ describe('AuthAPIテスト', () => {
 
   it('ユーザーログイン失敗2', async () => {
     const response = await request(app)
-      .post('/api/login')
+      .post('/api/auth/login')
       .send({ username: 'testuser2', password: 'testpassword'});
 
     expect(response.statusCode).toBe(401);
     expect(response.body).toHaveProperty('message', 'Invalid credentials');
   });
-
 });
