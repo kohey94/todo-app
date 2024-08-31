@@ -1,16 +1,17 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
-const { startServer, stopServer } = require('../server');
 const User = require('../models/User');
+const app = require('../app');
 
 require('dotenv').config();
 
-let app;
-const port = Math.floor(Math.random() * 40000) + 10000; // ランダムなポート番号を生成
+// let app;
+// const port = Math.floor(Math.random() * 40000) + 10000; // ランダムなポート番号を生成
 
 
 beforeAll(async () => {
-    app = startServer(port);
+    // テスト用のMongoDB URIで接続
+  await mongoose.connect(process.env.MONGODB_TEST_URI);
 });
 
 afterAll(async () => {
@@ -18,7 +19,7 @@ afterAll(async () => {
     await User.deleteMany({});
     await mongoose.connection.close();
 
-    stopServer();
+    
 });
 
 describe('AuthAPIテスト', () => {
