@@ -51,13 +51,10 @@ const startServer = (port) => {
 }
 
 // サーバー停止
-const stopServer = async() => {
+const stopServer = () => {
   if (server) {
-    await new Promise((resolve) => {
-      server.close(() => {
-        console.log('サーバー停止中');
-        resolve();
-      });
+    server.close(() => {
+      console.log('サーバー停止中');
     });
   }
 };

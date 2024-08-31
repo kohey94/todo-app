@@ -1,15 +1,12 @@
 const express = require('express');
 const Todo = require('../models/Todo');
-const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
-
-router.use(authMiddleware);
 
 // todo取得
 router.get('/', async (req, res) => {
     try {
-        const todos = await Todo.find({ userId: req.user._id });
+        const todos = await Todo.find();
         res.json(todos);
     } catch (error) {
         console.error("Error! Fetching todos: ", error);
@@ -23,7 +20,6 @@ router.post('/', async (req, res) => {
         const newTodo = new Todo({
             name: req.body.name,
             completed: false,
-            userId: req.user._id
         });
         await newTodo.save();
         res.json(newTodo);
@@ -37,7 +33,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const updatedTodo = await Todo.findByIdAndUpdate(
-            { _id:req.params.id, userId: req.user._id},
+            req.params.id,
             { completed: req.body.completed, name: req.body.name },
             { new: true } 
         );
@@ -51,7 +47,7 @@ router.put('/:id', async (req, res) => {
 // todo削除
 router.delete('/:id', async (req, res) => {
     try {
-        const deletedTodo = await Todo.findByIdAndDelete({ _id: req.params.id, userId: req.user._id });
+        const deletedTodo = await Todo.findByIdAndDelete(req.params.id);
         res.json(deletedTodo)
     } catch (error) {
         console.error("Error! Deleting todo: ", error);
