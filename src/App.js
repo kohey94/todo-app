@@ -20,7 +20,11 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      fetch("http://localhost:5000/api/todos")
+      fetch("http://localhost:5000/api/todos", {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+        }
+      })
         .then((response) => response.json())
         .then((data) => {
           if (Array.isArray(data)) {
@@ -57,6 +61,7 @@ function App() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({ name }),
     })
@@ -81,6 +86,7 @@ function App() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({ completed: !task.completed, name: task.name }),
     })
@@ -95,6 +101,10 @@ function App() {
   function deleteTask(id) {
     fetch(`http://localhost:5000/api/todos/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
+      },
     }).then(() => 
       setTasks(tasks.filter((task) => task._id !== id))
     );
@@ -105,6 +115,7 @@ function App() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({ completed: false, name: newName }),
     })

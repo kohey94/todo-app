@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const authMiddleware = require('./middleware/authMiddleware');
 const app = express();
 
 // 環境変数読み込み

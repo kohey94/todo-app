@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-
+require('dotenv').config();
 const router = express.Router();
 
 // ユーザー登録
@@ -23,11 +23,13 @@ router.post('/register', async (req, res) => {
         await user.save();
       
         // トークン生成
-        const token = jwt.sign( { id: user._id }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
-        });
+        const token = jwt.sign(
+            {userId: user._id}, 
+            process.env.JWT_SECRET,
+            {expiresIn: '1h'}
+        );
         
-        res.status(201).json({ message: 'User registered successfully' });
+        res.status(201).json({ token, message: 'User registered successfully' });
     } catch (error) {
         console.error('Error registering user: ', error);
         res.status(500).json({ message: 'Server Error' });
@@ -43,7 +45,11 @@ router.post('/login', async (req, res) => {
             // ログインできないとき
             return res.status(401).json({ message: 'Invalid credentials' });
         }
-        const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h'});
+        const token = jwt.sign(
+            {userId: user._id}, 
+            process.env.JWT_SECRET,
+            {expiresIn: '1h'}
+        );
         res.json({ token, username });
     } catch (error) {
         console.error('Error logging in:', error);

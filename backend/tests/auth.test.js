@@ -10,14 +10,14 @@ require('dotenv').config();
 
 
 beforeAll(async () => {
-    // テスト用のMongoDB URIで接続
+  // テスト用のMongoDB URIで接続
   await mongoose.connect(process.env.MONGODB_TEST_URI);
 });
 
 afterAll(async () => {
-    // テスト終了後にデータベースをクリーンアップ
-    await User.deleteMany({});
-    await mongoose.connection.close();
+  // テスト終了後にデータベースをクリーンアップ
+  await User.deleteMany({});
+  await mongoose.connection.close();
 
     
 });
