@@ -1,4 +1,3 @@
-// backend/server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -14,7 +13,9 @@ app.use(express.json());
 const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
 
 app.use(cors({
-  origin: allowedOrigin
+  origin: allowedOrigin,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // 必要なHTTPメソッドを追加
+  allowedHeaders: ["Content-Type", "Authorization"] // 必要なヘッダーを追加
 }));
 
 // MongoDB接続
