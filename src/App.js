@@ -5,6 +5,8 @@ import Todo from "./components/Todo";
 import LoginForm from './components/LoginForm';
 import Register from "./components/Register";
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const FILTER_MAP = {
   All: () => true,
   Active: (task) => !task.completed,
@@ -20,7 +22,7 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      fetch("http://localhost:5000/api/todos", {
+      fetch(`${apiUrl}/todos`, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
@@ -57,7 +59,7 @@ function App() {
   };
 
   function addTask(name) {
-    fetch("http://localhost:5000/api/todos", {
+    fetch(`${apiUrl}/todos`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +84,7 @@ function App() {
 
   function toggleTaskCompleted(id) {
     const task = tasks.find((task) => task._id === id);
-    fetch(`http://localhost:5000/api/todos/${id}`, {
+    fetch(`${apiUrl}/todos/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +101,7 @@ function App() {
   }
   
   function deleteTask(id) {
-    fetch(`http://localhost:5000/api/todos/${id}`, {
+    fetch(`${apiUrl}/todos/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +113,7 @@ function App() {
   }
 
   function editTask(id, newName) {
-    fetch(`http://localhost:5000/api/todos/${id}`, {
+    fetch(`${apiUrl}/todos/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

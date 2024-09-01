@@ -2,7 +2,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authMiddleware = require('./middleware/authMiddleware');
 const app = express();
 
 // 環境変数読み込み
@@ -12,8 +11,10 @@ const authRoutes = require('./routes/authRoutes');
 const todoRoutes = require('./routes/todoRoutes');
 
 app.use(express.json());
+const allowedOrigin = process.env.CORS_ORIGIN || "http://localhost:3000";
+
 app.use(cors({
-    origin: "http://localhost:3000"
+  origin: allowedOrigin
 }));
 
 // MongoDB接続
@@ -22,7 +23,9 @@ const connectDB = async () => {
   // プロダクションコードにテスト用に関する記述があるのがキモいから
   // テストコード側にテスト用DBの接続書いたほうがわかりやすい気がしてるから
   // でもどうすればいいのかわかんないので一旦このまま
-  const dbUri = process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URI : process.env.MONGODB_URI;
+  const dbUri = process.env.NODE_ENV === 'test' 
+    ? process.env.MONGODB_TEST_URI 
+    : process.env.MONGODB_URI;
   if (mongoose.connection.readyState === 0) {
     mongoose.connect(dbUri);
   }

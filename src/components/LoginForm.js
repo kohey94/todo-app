@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 function LoginForm ({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -7,7 +9,7 @@ function LoginForm ({ onLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch('http://localhost:5000/api/auth/login', {
+        const response = await fetch(`${apiUrl}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
