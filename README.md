@@ -33,4 +33,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 ## メモ
 バックエンドとフロントエンドはRenderにデプロイ、DBはMongoDB Atlasを利用。  
 https://render.com/  
-https://cloud.mongodb.com/
+https://cloud.mongodb.com/  
+
+
+フロントの修正落ち着いたらバックエンドfirebaseとかにしたいかもしれない  
+
