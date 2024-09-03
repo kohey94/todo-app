@@ -23,12 +23,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 #### `cd backend`
 #### `npm test`
 
-## TODO
+## TODO(TodoアプリのREADMEにTodo書くのややこしいな)
 - ~~router使う~~
 - ~~マルチユーザー対応~~
 - ~~どっかにデプロイ~~
-- UI修正
+- react-router-dom使う
+- UI修正（ログイン、登録画面）
+- UI修正（todo画面）
 - バリデーション
+- UIのテスト
 
 ## メモ
 バックエンドとフロントエンドはRenderにデプロイ、DBはMongoDB Atlasを利用。  
@@ -36,5 +39,4 @@ https://render.com/
 https://cloud.mongodb.com/  
 
 
-フロントの修正落ち着いたらバックエンドfirebaseとかにしたいかもしれない  
 
