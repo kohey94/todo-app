@@ -28,7 +28,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 - ~~router使う~~
 - ~~マルチユーザー対応~~
 - ~~どっかにデプロイ~~
-- react-router-dom使う
+- ~~react-router-dom使う~~
+- resct-router-domの使い方確認する
 - UI修正（ログイン、登録画面）
 - UI修正（todo画面）
 - バリデーション
