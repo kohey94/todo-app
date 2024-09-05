@@ -2,7 +2,8 @@
 [MDNのチュートリアルを参考にした](https://developer.mozilla.org/ja/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_todo_list_beginning)
 
 # デモ
-https://todo-app-1-dnpj.onrender.com/
+https://todo-app-1-dnpj.onrender.com/  
+無料枠でデプロイしておりスリープしてる可能性があるため、レスポンス返ってくるまでめちゃくちゃ遅いときがある...
 
 # 技術
 - MongoDB
